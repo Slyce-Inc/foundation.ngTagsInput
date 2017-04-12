@@ -5,7 +5,7 @@
  * Copyright (c) 2013-2017 Michael Benford
  * License: MIT
  *
- * Generated at 2017-04-05 11:42:05 -0400
+ * Generated at 2017-04-12 09:38:46 -0400
  */
 (function() {
 'use strict';
@@ -85,7 +85,7 @@ var tagsInput = angular.module('ngTagsInput', []);
  */
 tagsInput.directive('tagsInput', ["$timeout", "$document", "$window", "$q", "tagsInputConfig", "tiUtil", function($timeout, $document, $window, $q, tagsInputConfig, tiUtil) {
     function TagList(options, events, onTagAdding, onTagRemoving) {
-        var self = {}, getTagText, setTagText, canAddTag, canRemoveTag;
+        var self = {}, getTagText, setTagText, setTagId, canAddTag, canRemoveTag;
 
         getTagText = function(tag) {
             return tiUtil.safeToString(tag[options.displayProperty]);
@@ -95,13 +95,17 @@ tagsInput.directive('tagsInput', ["$timeout", "$document", "$window", "$q", "tag
             tag[options.displayProperty] = text;
         };
 
+        setTagId = function(tag) {            
+            tag.id = self.items.length;
+        };
+
         canAddTag = function(tag) {
             var tagText = getTagText(tag);
             var valid = tagText &&
                         tagText.length >= options.minLength &&
                         tagText.length <= options.maxLength &&
                         options.allowedTagsPattern.test(tagText) &&
-                        !tiUtil.findInObjectArray(self.items, tag, options.keyProperty || options.displayProperty);
+                        !tiUtil.findInObjectArray(self.items, tag);
 
             return $q.when(valid && onTagAdding({ $tag: tag })).then(tiUtil.promisifyValue);
         };
@@ -126,6 +130,7 @@ tagsInput.directive('tagsInput', ["$timeout", "$document", "$window", "$q", "tag
             }
 
             setTagText(tag, tagText);
+            setTagId(tag);
 
             return canAddTag(tag)
                 .then(function() {
@@ -317,7 +322,7 @@ tagsInput.directive('tagsInput', ["$timeout", "$document", "$window", "$q", "tag
             };
 
             scope.track = function(tag) {
-                return tag[options.keyProperty || options.displayProperty];
+                return tag[options.displayProperty] + tag.id;
             };
 
             scope.getTagClass = function(tag, index) {
@@ -1092,7 +1097,7 @@ tagsInput.factory('tiUtil', ["$timeout", "$q", function($timeout, $q) {
         comparer = comparer || self.defaultComparer;
 
         array.some(function(element) {
-            if (comparer(element[key], obj[key])) {
+            if (comparer(element.id, obj.id)) {
                 item = element;
                 return true;
             }
@@ -1186,7 +1191,7 @@ tagsInput.factory('tiUtil', ["$timeout", "$q", function($timeout, $q) {
 /* HTML templates */
 tagsInput.run(["$templateCache", function($templateCache) {
     $templateCache.put('ngTagsInput/tags-input.html',
-    "<div class=\"host\" tabindex=\"-1\" ng-click=\"eventHandlers.host.click()\" ti-transclude-append><div class=\"tags\" ng-class=\"{focused: hasFocus}\"><ul class=\"tag-list\"><li class=\"tag-item\" ng-repeat=\"tag in tagList.items track by $index\" ng-class=\"getTagClass(tag, $index)\" ng-click=\"eventHandlers.tag.click(tag)\"><ti-tag-item scope=\"templateScope\" data=\"::tag\"></ti-tag-item></li></ul><input class=\"input\" autocomplete=\"off\" ng-model=\"newTag.text\" ng-model-options=\"{getterSetter: true}\" ng-keydown=\"eventHandlers.input.keydown($event)\" ng-focus=\"eventHandlers.input.focus($event)\" ng-blur=\"eventHandlers.input.blur($event)\" ng-paste=\"eventHandlers.input.paste($event)\" ng-trim=\"false\" ng-class=\"{'invalid-tag': newTag.invalid}\" ng-disabled=\"disabled\" ti-bind-attrs=\"{type: options.type, placeholder: options.placeholder, tabindex: options.tabindex, spellcheck: options.spellcheck}\" ti-autosize></div></div>"
+    "<div class=\"host\" tabindex=\"-1\" ng-click=\"eventHandlers.host.click()\" ti-transclude-append><div class=\"tags\" ng-class=\"{focused: hasFocus}\"><ul class=\"tag-list\"><li class=\"tag-item\" ng-repeat=\"tag in tagList.items track by track(tag)\" ng-class=\"getTagClass(tag, $index)\" ng-click=\"eventHandlers.tag.click(tag)\"><ti-tag-item scope=\"templateScope\" data=\"::tag\"></ti-tag-item></li></ul><input class=\"input\" autocomplete=\"off\" ng-model=\"newTag.text\" ng-model-options=\"{getterSetter: true}\" ng-keydown=\"eventHandlers.input.keydown($event)\" ng-focus=\"eventHandlers.input.focus($event)\" ng-blur=\"eventHandlers.input.blur($event)\" ng-paste=\"eventHandlers.input.paste($event)\" ng-trim=\"false\" ng-class=\"{'invalid-tag': newTag.invalid}\" ng-disabled=\"disabled\" ti-bind-attrs=\"{type: options.type, placeholder: options.placeholder, tabindex: options.tabindex, spellcheck: options.spellcheck}\" ti-autosize></div></div>"
   );
 
   $templateCache.put('ngTagsInput/tag-item.html',

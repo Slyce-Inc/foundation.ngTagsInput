@@ -39,7 +39,7 @@ tagsInput.factory('tiUtil', function($timeout, $q) {
         comparer = comparer || self.defaultComparer;
 
         array.some(function(element) {
-            if (comparer(element[key], obj[key])) {
+            if (comparer(element.id, obj.id)) {
                 item = element;
                 return true;
             }

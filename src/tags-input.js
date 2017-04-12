@@ -56,7 +56,7 @@
  */
 tagsInput.directive('tagsInput', function($timeout, $document, $window, $q, tagsInputConfig, tiUtil) {
     function TagList(options, events, onTagAdding, onTagRemoving) {
-        var self = {}, getTagText, setTagText, canAddTag, canRemoveTag;
+        var self = {}, getTagText, setTagText, setTagId, canAddTag, canRemoveTag;
 
         getTagText = function(tag) {
             return tiUtil.safeToString(tag[options.displayProperty]);
@@ -66,13 +66,17 @@ tagsInput.directive('tagsInput', function($timeout, $document, $window, $q, tags
             tag[options.displayProperty] = text;
         };
 
+        setTagId = function(tag) {            
+            tag.id = self.items.length;
+        };
+
         canAddTag = function(tag) {
             var tagText = getTagText(tag);
             var valid = tagText &&
                         tagText.length >= options.minLength &&
                         tagText.length <= options.maxLength &&
                         options.allowedTagsPattern.test(tagText) &&
-                        !tiUtil.findInObjectArray(self.items, tag, options.keyProperty || options.displayProperty);
+                        !tiUtil.findInObjectArray(self.items, tag);
 
             return $q.when(valid && onTagAdding({ $tag: tag })).then(tiUtil.promisifyValue);
         };
@@ -97,6 +101,7 @@ tagsInput.directive('tagsInput', function($timeout, $document, $window, $q, tags
             }
 
             setTagText(tag, tagText);
+            setTagId(tag);
 
             return canAddTag(tag)
                 .then(function() {
@@ -288,7 +293,7 @@ tagsInput.directive('tagsInput', function($timeout, $document, $window, $q, tags
             };
 
             scope.track = function(tag) {
-                return tag[options.keyProperty || options.displayProperty];
+                return tag[options.displayProperty] + tag.id;
             };
 
             scope.getTagClass = function(tag, index) {

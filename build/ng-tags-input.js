@@ -5,7 +5,7 @@
  * Copyright (c) 2013-2017 Michael Benford
  * License: MIT
  *
- * Generated at 2017-04-12 09:38:46 -0400
+ * Generated at 2017-05-09 10:54:12 -0400
  */
 (function() {
 'use strict';
@@ -86,7 +86,7 @@ var tagsInput = angular.module('ngTagsInput', []);
 tagsInput.directive('tagsInput', ["$timeout", "$document", "$window", "$q", "tagsInputConfig", "tiUtil", function($timeout, $document, $window, $q, tagsInputConfig, tiUtil) {
     function TagList(options, events, onTagAdding, onTagRemoving) {
         var self = {}, getTagText, setTagText, setTagId, canAddTag, canRemoveTag;
-
+        var _nextId = 0;
         getTagText = function(tag) {
             return tiUtil.safeToString(tag[options.displayProperty]);
         };
@@ -96,7 +96,7 @@ tagsInput.directive('tagsInput', ["$timeout", "$document", "$window", "$q", "tag
         };
 
         setTagId = function(tag) {            
-            tag.id = self.items.length;
+            tag.id = _nextId++;
         };
 
         canAddTag = function(tag) {
@@ -123,6 +123,7 @@ tagsInput.directive('tagsInput', ["$timeout", "$document", "$window", "$q", "tag
         };
 
         self.add = function(tag) {
+
             var tagText = getTagText(tag);
 
             if (options.replaceSpacesWithDashes) {

@@ -57,7 +57,7 @@
 tagsInput.directive('tagsInput', function($timeout, $document, $window, $q, tagsInputConfig, tiUtil) {
     function TagList(options, events, onTagAdding, onTagRemoving) {
         var self = {}, getTagText, setTagText, setTagId, canAddTag, canRemoveTag;
-
+        var _nextId = 0;
         getTagText = function(tag) {
             return tiUtil.safeToString(tag[options.displayProperty]);
         };
@@ -67,7 +67,7 @@ tagsInput.directive('tagsInput', function($timeout, $document, $window, $q, tags
         };
 
         setTagId = function(tag) {            
-            tag.id = self.items.length;
+            tag.id = _nextId++;
         };
 
         canAddTag = function(tag) {
@@ -94,6 +94,7 @@ tagsInput.directive('tagsInput', function($timeout, $document, $window, $q, tags
         };
 
         self.add = function(tag) {
+
             var tagText = getTagText(tag);
 
             if (options.replaceSpacesWithDashes) {

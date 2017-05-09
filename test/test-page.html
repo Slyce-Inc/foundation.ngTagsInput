@@ -5,7 +5,7 @@
   <script type="text/javascript" src="lib/angular.js"></script>
   <script type="text/javascript" src="lib/ng-stats.min.js"></script>
   <script type="text/javascript" src="../build/ng-tags-input.js"></script>
-  <link rel="stylesheet" href="../build/ng-tags-input.css"/>
+  <link rel="stylesheet" href="https://s3.amazonaws.com/slyce-picasso/assets/slyce.css"/>
 
   <style>
     .stats {
@@ -23,9 +23,11 @@
 </head>
 
 <body ng-controller="Ctrl">
-  <tags-input ng-model="tags" add-on-blur="false" ng-focus="focus()" ng-blur="blur()" add-on-paste="true" paste-split-pattern="[,;|]" spellcheck="false" display-property="name" template="tag-template">
-      <auto-complete source="loadItems($query)" min-length="1" load-on-down-arrow="true" load-on-focus="true" load-on-empty="true" template="autocomplete-template"></auto-complete>
-  </tags-input>
+  <div class="container">
+    <tags-input ng-model="tags" add-on-blur="false" ng-focus="focus()" ng-blur="blur()" add-on-paste="true" paste-split-pattern="[,;|]" spellcheck="false" display-property="name" template="tag-template">
+        <auto-complete source="loadItems($query)" min-length="1" load-on-down-arrow="true" load-on-focus="true" load-on-empty="true" template="autocomplete-template"></auto-complete>
+    </tags-input>
+  </div>
 
   <script type="text/ng-template" id="tag-template">
     <div style="float: left;">

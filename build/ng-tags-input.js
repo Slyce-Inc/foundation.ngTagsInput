@@ -5,7 +5,7 @@
  * Copyright (c) 2013-2017 Michael Benford
  * License: MIT
  *
- * Generated at 2017-05-09 10:54:12 -0400
+ * Generated at 2017-05-19 15:04:55 -0400
  */
 (function() {
 'use strict';
@@ -547,7 +547,7 @@ tagsInput.directive('tiTagItem', ["tiUtil", function(tiUtil) {
 
 /**
  * @ngdoc directive
- * @name autoComplete
+ * @name autoSuggest
  * @module ngTagsInput
  *
  * @description
@@ -577,7 +577,7 @@ tagsInput.directive('tiTagItem', ["tiUtil", function(tiUtil) {
  *    of the evaluation must be one of the values supported by the ngClass directive (either a string, an array or an object).
  *    See https://docs.angularjs.org/api/ng/directive/ngClass for more information.
  */
-tagsInput.directive('autoComplete', ["$document", "$timeout", "$sce", "$q", "tagsInputConfig", "tiUtil", function($document, $timeout, $sce, $q, tagsInputConfig, tiUtil) {
+tagsInput.directive('autoSuggest', ["$document", "$timeout", "$sce", "$q", "tagsInputConfig", "tiUtil", function($document, $timeout, $sce, $q, tagsInputConfig, tiUtil) {
     function SuggestionList(loadFn, options, events) {
         var self = {}, getDifference, lastPromise, getTagId;
 
@@ -689,7 +689,7 @@ tagsInput.directive('autoComplete', ["$document", "$timeout", "$sce", "$q", "tag
         controller: ["$scope", "$element", "$attrs", function($scope, $element, $attrs) {
             $scope.events = tiUtil.simplePubSub();
 
-            tagsInputConfig.load('autoComplete', $scope, $attrs, {
+            tagsInputConfig.load('autoSuggest', $scope, $attrs, {
                 template: [String, 'ngTagsInput/auto-complete-match.html'],
                 debounceDelay: [Number, 100],
                 minLength: [Number, 3],
@@ -831,12 +831,12 @@ tagsInput.directive('autoComplete', ["$document", "$timeout", "$sce", "$q", "tag
  * @module ngTagsInput
  *
  * @description
- * Represents an autocomplete match. Used internally by the autoComplete directive.
+ * Represents an autocomplete match. Used internally by the autoSuggest directive.
  */
 tagsInput.directive('tiAutocompleteMatch', ["$sce", "tiUtil", function($sce, tiUtil) {
     return {
         restrict: 'E',
-        require: '^autoComplete',
+        require: '^autoSuggest',
         template: '<ng-include src="$$template"></ng-include>',
         scope: {
             $scope: '=scope',

@@ -6,12 +6,12 @@
  * @module ngTagsInput
  *
  * @description
- * Represents an autocomplete match. Used internally by the autoComplete directive.
+ * Represents an autocomplete match. Used internally by the autoSuggest directive.
  */
 tagsInput.directive('tiAutocompleteMatch', function($sce, tiUtil) {
     return {
         restrict: 'E',
-        require: '^autoComplete',
+        require: '^autoSuggest',
         template: '<ng-include src="$$template"></ng-include>',
         scope: {
             $scope: '=scope',

@@ -2,7 +2,7 @@
 
 /**
  * @ngdoc directive
- * @name autoComplete
+ * @name autoSuggest
  * @module ngTagsInput
  *
  * @description
@@ -32,7 +32,7 @@
  *    of the evaluation must be one of the values supported by the ngClass directive (either a string, an array or an object).
  *    See https://docs.angularjs.org/api/ng/directive/ngClass for more information.
  */
-tagsInput.directive('autoComplete', function($document, $timeout, $sce, $q, tagsInputConfig, tiUtil) {
+tagsInput.directive('autoSuggest', function($document, $timeout, $sce, $q, tagsInputConfig, tiUtil) {
     function SuggestionList(loadFn, options, events) {
         var self = {}, getDifference, lastPromise, getTagId;
 
@@ -144,7 +144,7 @@ tagsInput.directive('autoComplete', function($document, $timeout, $sce, $q, tags
         controller: function($scope, $element, $attrs) {
             $scope.events = tiUtil.simplePubSub();
 
-            tagsInputConfig.load('autoComplete', $scope, $attrs, {
+            tagsInputConfig.load('autoSuggest', $scope, $attrs, {
                 template: [String, 'ngTagsInput/auto-complete-match.html'],
                 debounceDelay: [Number, 100],
                 minLength: [Number, 3],
